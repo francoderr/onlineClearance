@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Clearance Management System</title>
+    <style>
+      :root {
+        --theme-color: #cd5ff8;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+      }
+
+      header {
+        background-color: var(--theme-color);
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 10px;
+      }
+
+      .headerDiv {
+        display: flex;
+        align-items: center;
+      }
+
+      #toggleSidebar {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 100px); /* Adjusted for header height */
+      }
+
+      .sidebar {
+        display: flex;
+        background-color: #333;
+        padding: 10px;
+        width: 100%;
+        justify-content: space-around;
+      }
+
+      .sidebar ul {
+        display: flex;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .sidebar ul li {
+        margin: 0 15px;
+      }
+
+      .sidebar ul li a {
+        text-decoration: none;
+        color: white;
+      }
+
+      main {
+        flex: 1;
+        flex-direction: column;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Centers cards horizontally */
+        align-items: center; /* Centers cards vertically */
+        gap: 50px;
+      }
+
+      .sidebar.collapsed {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .sidebar ul {
+          flex-direction: column;
+        }
+
+        .sidebar ul li {
+          margin: 10px 0;
+        }
+      }
+
+      .logout-button {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      .logout-button:hover {
+        background-color: #ff52c5;
+      }
+
+      .clearance-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        background: #fff;
+        text-align: center;
+        margin: 20px auto;
+        max-width: 400px;
+      }
+
+      .clearance-button {
+        background-color: var(--theme-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .clearance-button:hover {
+        background-color: #d4a056;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="headerDiv">
+        <button id="toggleSidebar">☰</button>
+        <h1>Online Clearance Management System</h1>
+      </div>
+      <a href="/logout"><button class="logout-button">Logout</button></a>
+    </header>
+    <div class="container">
+      <nav id="sidebar" class="sidebar">
+        <ul>
+          <li><a href="/dashboard">Home</a></li>
+          <li><a href="/clearanceCategories">Clearance</a></li>
+          <li><a href="/admin">Admin</a></li>
+        </ul>
+      </nav>
+      <main>
+        <h1 style="font-size: 30px; font-weight: bold; text-align: center">
+          Welcome To The Online Clearance Management System
+        </h1>
+        <div class="clearance-card">
+          <h2>Begin Clearance Process</h2>
+          <button class="clearance-button" id="beginClearance">
+            Start Clearance
+          </button>
+        </div>
+      </main>
+    </div>
+    <script>
+      document
+        .getElementById("toggleSidebar")
+        .addEventListener("click", function () {
+          document.getElementById("sidebar").classList.toggle("collapsed");
+        });
+
+      document
+        .getElementById("beginClearance")
+        .addEventListener("click", async function () {
+          try {
+            const response = await fetch(
+              "/beginClearance",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Cookie: document.cookie, // Send the session cookie if needed
+                },
+                body: JSON.stringify({}), // Adjust the body if required by your endpoint
+              }
+            );
+
+            const data = await response.json();
+            if (data.Status === "Success") {
+              alert("Clearance process started successfully!");
+              window.location.href = "/clearanceCategories"; //
+            } else {
+              alert(`Failed to start clearance process`);
+              console.error("Failed to start clearance process:", data);
+            }
+          } catch (error) {
+            console.error("Error starting clearance process:", error);
+          }
+        });
+    </script>
+  </body>
+</html>

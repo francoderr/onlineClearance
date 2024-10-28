@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clearance Categories</title>
+    <style>
+      :root {
+        --theme-color: #cd5ff8;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+      }
+
+      header {
+        background-color: var(--theme-color);
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 10px;
+      }
+
+      .headerDiv {
+        display: flex;
+        align-items: center;
+      }
+
+      #toggleSidebar {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 100px);
+      }
+
+      .sidebar {
+        display: flex;
+        background-color: #333;
+        padding: 10px;
+        width: 100%;
+        justify-content: space-around;
+      }
+
+      .sidebar ul {
+        display: flex;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .sidebar ul li {
+        margin: 0 15px;
+      }
+
+      .sidebar ul li a {
+        text-decoration: none;
+        color: white;
+      }
+
+      main {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Centers cards horizontally */
+        align-items: center; /* Centers cards vertically */
+        gap: 20px;
+      }
+
+      .card {
+        width: 250px; /* Fixed width to control card size */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        background: #fff;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .clearance-button {
+        background-color: var(--theme-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        text-decoration: none;
+      }
+
+      .clearance-button:hover {
+        background-color: #d4a056;
+      }
+
+      .logout-button {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      .logout-button:hover {
+        background-color: #ff52c5;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="headerDiv">
+        <button id="toggleSidebar">☰</button>
+        <h1>Clearance Categories</h1>
+      </div>
+      <a href="/logout"><button class="logout-button">Logout</button></a>
+    </header>
+    <div class="container">
+      <nav id="sidebar" class="sidebar">
+        <ul>
+          <li><a href="/dashboard">Home</a></li>
+          <li><a href="/clearanceCategories">Clearance</a></li>
+          <li><a href="/admin">Admin</a></li>
+        </ul>
+      </nav>
+      <main>
+        <div class="card">
+          <h2>Administration</h2>
+          <a class="clearance-button" href="/clearance/administration"
+            >Begin Clearance</a
+          >
+        </div>
+        <div class="card">
+          <h2>Sports</h2>
+          <a class="clearance-button" href="/clearance/sports"
+            >Begin Clearance</a
+          >
+        </div>
+        <div class="card">
+          <h2>Finance</h2>
+          <a class="clearance-button" href="/clearance/finance"
+            >Begin Clearance</a
+          >
+        </div>
+        <div class="card">
+          <h2>Library</h2>
+          <a class="clearance-button" href="/clearance/library"
+            >Begin Clearance</a
+          >
+        </div>
+        <div class="card">
+          <h2>Class Teacher</h2>
+          <a class="clearance-button" href="/clearance/class-teacher"
+            >Begin Clearance</a
+          >
+        </div>
+      </main>
+    </div>
+    <script>
+      document
+        .getElementById("toggleSidebar")
+        .addEventListener("click", function () {
+          document.getElementById("sidebar").classList.toggle("collapsed");
+        });
+    </script>
+  </body>
+</html>

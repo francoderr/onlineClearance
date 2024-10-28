@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Clearance Management System</title>
+    <style>
+      :root {
+        --theme-color: #cd5ff8;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+      }
+
+      header {
+        background-color: var(--theme-color);
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 10px;
+      }
+
+      .headerDiv {
+        display: flex;
+        align-items: center;
+      }
+
+      #toggleSidebar {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 100px); /* Adjusted for header height */
+      }
+
+      .sidebar {
+        display: flex;
+        background-color: #333;
+        padding: 10px;
+        width: 100%;
+        justify-content: space-around;
+      }
+
+      .sidebar ul {
+        display: flex;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .sidebar ul li {
+        margin: 0 15px;
+      }
+
+      .sidebar ul li a {
+        text-decoration: none;
+        color: white;
+      }
+
+      main {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+      }
+
+      .sidebar.collapsed {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .sidebar ul {
+          flex-direction: column;
+        }
+
+        .sidebar ul li {
+          margin: 10px 0;
+        }
+      }
+
+      .logout-button {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      .logout-button:hover {
+        background-color: #ff52c5;
+      }
+
+      .dashboard-cards {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .dashboard-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+        flex: 1 1 calc(50% - 40px);
+        box-sizing: border-box;
+      }
+
+      .dashboard-card:hover {
+        transform: translateY(-10px);
+        cursor: pointer;
+      }
+
+      .dashboard-card h2 {
+        margin: 0 0 10px;
+        font-size: 24px;
+        color: var(--theme-color);
+      }
+
+      .dashboard-card p {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+
+      .dashboard-card button {
+        background-color: var(--theme-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      .dashboard-card button:hover {
+        background-color: #00c9b6;
+      }
+
+      @media (max-width: 768px) {
+        .dashboard-card {
+          flex: 1 1 100%;
+          margin: 10px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="headerDiv">
+        <button id="toggleSidebar">☰</button>
+        <h1>Online Clearance Management System</h1>
+      </div>
+      <a href="/logout"><button class="logout-button">Logout</button></a>
+    </header>
+    <div class="container">
+      <nav id="sidebar" class="sidebar">
+        <ul>
+          <li>
+            <a href="/dashboard">Home</a>
+          </li>
+          <li><a href="/users">Users</a></li>
+          <li><a href="/products">Products</a></li>
+        </ul>
+      </nav>
+      <main>
+        <h1>Admin Dashboard</h1>
+        <div class="dashboard-cards">
+          <div class="dashboard-card">
+            <h2>Total Users</h2>
+            <p id="total-users">Loading...</p>
+            <button onclick="location.href='/users'">View Users</button>
+          </div>
+          <div class="dashboard-card">
+            <h2>Total Products</h2>
+            <p id="total-products">Loading...</p>
+            <button onclick="location.href='/products'">View Products</button>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script>
+      document
+        .getElementById("toggleSidebar")
+        .addEventListener("click", function () {
+          document.getElementById("sidebar").classList.toggle("collapsed");
+        });
+
+      async function fetchData() {
+        try {
+          const usersResponse = await fetch("/getUsers");
+          const usersData = await usersResponse.json();
+          const totalUsers = usersData.users.length;
+
+        console.log("User data", JSON.stringify(usersData));
+
+          // const productsResponse = await fetch(
+          //   "/listProducts"
+          // );
+          // const productsData = await productsResponse.json();
+          // const totalProducts = productsData.products.length;
+
+        // console.log("User data", JSON.stringify(productsData));
+
+
+          document.getElementById("total-users").textContent = totalUsers;
+          // document.getElementById("total-products").textContent = totalProducts;
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      fetchData();
+    </script>
+  </body>
+</html>
