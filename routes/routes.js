@@ -4,6 +4,7 @@ import { editUser, getUsers } from "../controllers/userController.js";
 import {
   beginClearance,
   clearDepartment,
+  getClearanceInfo,
   uploadPics,
 } from "../controllers/clearanceController.js";
 import { createToken, stkPush } from "../controllers/paymentController.js";
@@ -22,5 +23,6 @@ router.post("/stkPush", createToken, stkPush);
 router.post("/beginClearance", isAuthenticated, beginClearance);
 router.post("/uploadPics", isAuthenticated, uploadPics);
 router.post("/clearDepartment", isAdmin, clearDepartment);
+router.post("/getClearanceInfo", isAuthenticated, getClearanceInfo);
 
 export default router;

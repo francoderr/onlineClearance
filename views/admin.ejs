@@ -180,7 +180,6 @@
             <a href="/dashboard">Home</a>
           </li>
           <li><a href="/users">Users</a></li>
-          <li><a href="/products">Products</a></li>
         </ul>
       </nav>
       <main>
@@ -192,9 +191,9 @@
             <button onclick="location.href='/users'">View Users</button>
           </div>
           <div class="dashboard-card">
-            <h2>Total Products</h2>
-            <p id="total-products">Loading...</p>
-            <button onclick="location.href='/products'">View Products</button>
+            <h2>Total Departments</h2>
+            <p id="total-departments">5</p>
+            <button onclick="location.href='/#'">View Departments</button>
           </div>
         </div>
       </main>
@@ -214,17 +213,7 @@
 
         console.log("User data", JSON.stringify(usersData));
 
-          // const productsResponse = await fetch(
-          //   "/listProducts"
-          // );
-          // const productsData = await productsResponse.json();
-          // const totalProducts = productsData.products.length;
-
-        // console.log("User data", JSON.stringify(productsData));
-
-
           document.getElementById("total-users").textContent = totalUsers;
-          // document.getElementById("total-products").textContent = totalProducts;
         } catch (error) {
           console.error("Error fetching data:", error);
         }

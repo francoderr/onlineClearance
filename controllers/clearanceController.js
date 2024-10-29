@@ -63,6 +63,7 @@ export const beginClearance = async (req, res) => {
 
 export const uploadPics = async (req, res) => {
   const pic = req.body.pic;
+  const text = req.body.text || "";
   const userId = req.user._id;
   const val = req.body.value;
 
@@ -80,7 +81,10 @@ export const uploadPics = async (req, res) => {
     });
   }
 
-  let obj = { [req.body.value]: pic };
+  let obj = { 
+    [req.body.value]: pic,
+    [req.body.value2]: text,
+   };
 
   try {
     const updatedProduct = await ClearanceModel.findOneAndUpdate(
@@ -108,9 +112,9 @@ export const uploadPics = async (req, res) => {
 
 
 export const clearDepartment = async (req, res) => {
+  const action = req.body.action;
   const userId = req.user._id;
   const val = req.body.value;
-  const action = req.body.action;
 
   if (!userId) {
     return res.status(400).json({
@@ -160,68 +164,34 @@ export const clearDepartment = async (req, res) => {
   }
 }
 
-//   let userId = req.user._id;
-//   userId = userId.toString();
+export const getClearanceInfo = async (req, res) => {
+  const userId = req.user._id;
 
-//   if (!userId) {
-//     return res.status(400).send("userId required to get cart items");
-//   }
+  if (!userId) {
+    return res.status(400).json({
+      Status: "Failed",
+      message: "userId required!",
+    });
+  }
 
-//   try {
-//     await CartModel.aggregate([
-//       {
-//         $match: {
-//           userId,
-//         },
-//       },
-//       {
-//         $addFields: {
-//           productIdId: { $toObjectId: "$productId" },
-//         },
-//       },
-//       {
-//         $lookup: {
-//           from: "products",
-//           localField: "productIdId",
-//           foreignField: "_id",
-//           as: "productDetails",
-//         },
-//       },
-//       {
-//         $unwind: "$productDetails",
-//       },
-//       {
-//         $project: {
-//           id: "$_id",
-//           _id: 0,
-//           username: 1,
-//           userId: 1,
-//           productId: 1,
-//           title: "$productDetails.title",
-//           image: "$productDetails.image",
-//           description: "$productDetails.description",
-//           price: "$productDetails.price",
-//         },
-//       },
-//     ]).then((response) => {
-//       if (response) {
-//         res.status(200).json({
-//           Status: "Success",
-//           message: "fetched cart items successfuly!",
-//           data: response,
-//         });
-//       } else {
-//         res.status(500).json({
-//           Status: "FAILED",
-//           message: "Could not fetch cart items",
-//         });
-//       }
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       Status: "Failed",
-//       message: "An error occurred while fetching cart items",
-//       error: error.message,
-//     });
-//   }
-// };
+  try {
+    const info = await ClearanceModel.findOne(
+      { userId },
+    );
+
+    if (!info) {
+      return res.status(404).json({
+        Status: "Failed",
+        message: "Clearance details not found!",
+      });
+    }
+
+    res.status(200).json({
+      Status: "Success",
+      message: `Info fetched successfully!`,
+      info,
+    });
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+}

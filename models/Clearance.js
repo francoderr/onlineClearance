@@ -11,7 +11,10 @@ const clearanceSchema = new mongoose.Schema({
   },
   administrationPic: {
     type: String,
-    // required: true,
+    default: "",
+  },
+  administrationText: {
+    type: String,
     default: "",
   },
   administrationCleared: {
@@ -20,7 +23,10 @@ const clearanceSchema = new mongoose.Schema({
   },
   libraryPic: {
     type: String,
-    // required: true,
+    default: "",
+  },
+  libraryText: {
+    type: String,
     default: "",
   },
   libraryCleared: {
@@ -29,7 +35,10 @@ const clearanceSchema = new mongoose.Schema({
   },
   sportsPic: {
     type: String,
-    // required: true,
+    default: "",
+  },
+  sportsText: {
+    type: String,
     default: "",
   },
   sportsCleared: {
@@ -38,7 +47,10 @@ const clearanceSchema = new mongoose.Schema({
   },
   financePic: {
     type: String,
-    // required: true,
+    default: "",
+  }, 
+  financeText: {
+    type: String,
     default: "",
   }, 
   financeCleared: {
@@ -47,7 +59,10 @@ const clearanceSchema = new mongoose.Schema({
   },
   classTeacherPic: {
     type: String,
-    // required: true,
+    default: "",
+  },
+  classTeacherText: {
+    type: String,
     default: "",
   },
   classTeacherCleared: {

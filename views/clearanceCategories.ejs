@@ -80,6 +80,7 @@
 
       .card {
         width: 250px; /* Fixed width to control card size */
+        height: 150px; /* Fixed width to control card size */
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 20px;
@@ -106,7 +107,7 @@
       }
 
       .clearance-button:hover {
-        background-color: #d4a056;
+        background-color: #ff52c5;
       }
 
       .logout-button {
@@ -122,6 +123,10 @@
 
       .logout-button:hover {
         background-color: #ff52c5;
+      }
+      .heading-container {
+        text-align: center;
+        margin-top: 50px; /* Adds spacing above and below */
       }
     </style>
   </head>
@@ -141,6 +146,9 @@
           <li><a href="/admin">Admin</a></li>
         </ul>
       </nav>
+      <div class="heading-container">
+        <h2>Select Department to Clear</h2>
+      </div>
       <main>
         <div class="card">
           <h2>Administration</h2>

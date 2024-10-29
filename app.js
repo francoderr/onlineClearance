@@ -98,10 +98,6 @@ app.get("/createProd", isAdmin, (req, res) => {
   res.render("createProd", { user: req.user });
 });
 
-app.get("/products", isAdmin, (req, res) => {
-  res.render("products", { user: req.user });
-});
-
 app.get("/admin", isAdmin, (req, res) => {
   res.render("admin", { user: req.user });
 });
@@ -112,6 +108,10 @@ app.get("/myCart", isAuthenticated, (req, res) => {
 
 app.get("/checkout/:totalPrice?", isAuthenticated, (req, res) => {
   res.render("checkout", { user: req.user });
+});
+
+app.get("/clearance/:category?", isAuthenticated, (req, res) => {
+  res.render("clearingPage", { user: req.user });
 });
 
 app.get("/not-authorized", (req, res) => {
