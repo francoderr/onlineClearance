@@ -195,3 +195,28 @@ export const getClearanceInfo = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 }
+
+export const getAllClearances = async (req, res) => {
+  try {
+    let response = await ClearanceModel.aggregate([
+      {
+        $match: {},
+      },
+    ]);
+
+    if (!response) {
+      return res.status(404).json({
+        Status: "Failed",
+        message: "Clearance documents not found!",
+      });
+    }
+
+    res.status(200).json({
+      Status: "Success",
+      message: `Clearance documents fetched successfully!`,
+      response,
+    });
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+}

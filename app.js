@@ -114,6 +114,10 @@ app.get("/clearance/:category?", isAuthenticated, (req, res) => {
   res.render("clearingPage", { user: req.user });
 });
 
+app.get("/clearanceRequests", isAdmin, (req, res) => {
+  res.render("clearancesTable", { user: req.user });
+});
+
 app.get("/not-authorized", (req, res) => {
   res.render("not-authorized");
 });

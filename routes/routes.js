@@ -4,6 +4,7 @@ import { editUser, getUsers } from "../controllers/userController.js";
 import {
   beginClearance,
   clearDepartment,
+  getAllClearances,
   getClearanceInfo,
   uploadPics,
 } from "../controllers/clearanceController.js";
@@ -24,5 +25,6 @@ router.post("/beginClearance", isAuthenticated, beginClearance);
 router.post("/uploadPics", isAuthenticated, uploadPics);
 router.post("/clearDepartment", isAdmin, clearDepartment);
 router.post("/getClearanceInfo", isAuthenticated, getClearanceInfo);
+router.get("/getAllClearances", isAdmin, getAllClearances);
 
 export default router;

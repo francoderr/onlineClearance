@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clearance Requests</title>
+    <style>
+        :root {
+            --theme-color: #cd5ff8;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        header {
+            background-color: var(--theme-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 10px;
+        }
+
+        .headerDiv {
+            display: flex;
+            align-items: center;
+        }
+
+        #toggleSidebar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 60px); /* Adjusted for header height */
+        }
+
+        .sidebar {
+            display: flex;
+            background-color: #333;
+            padding: 10px;
+            width: 100%;
+            justify-content: space-around;
+        }
+
+        .sidebar ul {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            margin: 0 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .logout-button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #ff52c5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--theme-color);
+            color: white;
+        }
+
+        .cell-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+        }
+
+        .receipt img {
+            width: 50px;
+            height: auto;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+        }
+
+        .status span {
+            font-weight: bold;
+        }
+
+        .cleared {
+            color: green;
+        }
+
+        .pending {
+            color: red;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="headerDiv">
+            <button id="toggleSidebar">☰</button>
+            <h1>Clearance Requests</h1>
+        </div>
+        <a href="/logout"><button class="logout-button">Logout</button></a>
+    </header>
+    <div class="container">
+        <nav id="sidebar" class="sidebar">
+            <ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/clearanceRequests">Clearance Requests</a></li>
+            </ul>
+        </nav>
+        <main>
+            <h2>Clearance Requests</h2>
+            <button onclick="fetchClearanceRequests()">Reload Data</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Administration</th>
+                        <th>Finance</th>
+                        <th>Library</th>
+                        <th>Sports</th>
+                        <th>Class Teacher</th>
+                    </tr>
+                </thead>
+                <tbody id="clearance-requests-table">
+                    <tr><td colspan="6">Loading...</td></tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+    <script>
+        document.getElementById("toggleSidebar").addEventListener("click", function() {
+            document.getElementById("sidebar").classList.toggle("collapsed");
+        });
+
+        async function fetchClearanceRequests() {
+            try {
+                const response = await fetch("/getAllClearances");
+                const data = await response.json();
+
+                if (data.response && data.response.length) {
+                    const tableBody = document.getElementById("clearance-requests-table");
+                    tableBody.innerHTML = "";
+
+                    data.response.forEach(request => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${request.username}</td>
+                            <td>
+                                <div class="cell-content">
+                                    <div class="row">
+                                        ${request.administrationPic ? `
+                                            <span><strong>Receipt:</strong></span>
+                                            <span class="receipt">
+                                                <img src="${request.administrationPic}" alt="Administration Receipt">
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                    <div class="row">
+                                        <span><strong>Details:</strong></span>
+                                        <span>${request.administrationText}</span>
+                                    </div>
+                                    <div class="row status">
+                                        <span><strong>Cleared:</strong></span>
+                                        <span class="${request.administrationCleared ? 'cleared' : 'pending'}">${request.administrationCleared ? 'Cleared' : 'Pending'}</span>
+                                    </div>
+                                    <div class="button-container">
+                                        <button onclick="toggleClearance('administrationCleared', 'activate')">Activate</button>
+                                        <button onclick="toggleClearance('administrationCleared', 'deactivate')">Deactivate</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell-content">
+                                    <div class="row">
+                                        ${request.financePic ? `
+                                            <span><strong>Receipt:</strong></span>
+                                            <span class="receipt">
+                                                <img src="${request.financePic}" alt="Finance Receipt">
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                    <div class="row">
+                                        <span><strong>Details:</strong></span>
+                                        <span>${request.financeText}</span>
+                                    </div>
+                                    <div class="row status">
+                                        <span><strong>Cleared:</strong></span>
+                                        <span class="${request.financeCleared ? 'cleared' : 'pending'}">${request.financeCleared ? 'Cleared' : 'Pending'}</span>
+                                    </div>
+                                    <div class="button-container">
+                                        <button onclick="toggleClearance('financeCleared', 'activate')">Activate</button>
+                                        <button onclick="toggleClearance('financeCleared', 'deactivate')">Deactivate</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell-content">
+                                    <div class="row">
+                                        ${request.libraryPic ? `
+                                            <span><strong>Receipt:</strong></span>
+                                            <span class="receipt">
+                                                <img src="${request.libraryPic}" alt="Library Receipt">
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                    <div class="row">
+                                        <span><strong>Details:</strong></span>
+                                        <span>${request.libraryText}</span>
+                                    </div>
+                                    <div class="row status">
+                                        <span><strong>Cleared:</strong></span>
+                                        <span class="${request.libraryCleared ? 'cleared' : 'pending'}">${request.libraryCleared ? 'Cleared' : 'Pending'}</span>
+                                    </div>
+                                    <div class="button-container">
+                                        <button onclick="toggleClearance('libraryCleared', 'activate')">Activate</button>
+                                        <button onclick="toggleClearance('libraryCleared', 'deactivate')">Deactivate</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell-content">
+                                    <div class="row">
+                                        ${request.sportsPic ? `
+                                            <span><strong>Receipt:</strong></span>
+                                            <span class="receipt">
+                                                <img src="${request.sportsPic}" alt="Sports Receipt">
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                    <div class="row">
+                                        <span><strong>Details:</strong></span>
+                                        <span>${request.sportsText}</span>
+                                    </div>
+                                    <div class="row status">
+                                        <span><strong>Cleared:</strong></span>
+                                        <span class="${request.sportsCleared ? 'cleared' : 'pending'}">${request.sportsCleared ? 'Cleared' : 'Pending'}</span>
+                                    </div>
+                                    <div class="button-container">
+                                        <button onclick="toggleClearance('sportsCleared', 'activate')">Activate</button>
+                                        <button onclick="toggleClearance('sportsCleared', 'deactivate')">Deactivate</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell-content">
+                                    <div class="row">
+                                        ${request.classTeacherPic ? `
+                                            <span><strong>Receipt:</strong></span>
+                                            <span class="receipt">
+                                                <img src="${request.classTeacherPic}" alt="Class Teacher Receipt">
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                    <div class="row">
+                                        <span><strong>Details:</strong></span>
+                                        <span>${request.classTeacherText}</span>
+                                    </div>
+                                    <div class="row status">
+                                        <span><strong>Cleared:</strong></span>
+                                        <span class="${request.classTeacherCleared ? 'cleared' : 'pending'}">${request.classTeacherCleared ? 'Cleared' : 'Pending'}</span>
+                                    </div>
+                                    <div class="button-container">
+                                        <button onclick="toggleClearance('classTeacherCleared', 'activate')">Activate</button>
+                                        <button onclick="toggleClearance('classTeacherCleared', 'deactivate')">Deactivate</button>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    document.getElementById("clearance-requests-table").innerHTML = "<tr><td colspan='6'>No clearance requests found.</td></tr>";
+                }
+            } catch (error) {
+                console.error("Error fetching clearance requests:", error);
+            }
+        }
+
+        async function toggleClearance(value, action) {
+            const url = 'http://localhost:3000/clearDepartment';
+            const data = { value: value, action: action };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    alert(`Successfully ${action}d ${value}`);
+                    fetchClearanceRequests(); // Refresh the table after action
+                } else {
+                    alert('Error occurred while updating the clearance status.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        fetchClearanceRequests(); // Initial fetch
+    </script>
+</body>
+</html>

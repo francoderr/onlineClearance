@@ -179,7 +179,7 @@
           <li>
             <a href="/dashboard">Home</a>
           </li>
-          <li><a href="/users">Users</a></li>
+          <!-- <li><a href="/users">Users</a></li> -->
         </ul>
       </nav>
       <main>
@@ -193,8 +193,13 @@
           <div class="dashboard-card">
             <h2>Total Departments</h2>
             <p id="total-departments">5</p>
-            <button onclick="location.href='/#'">View Departments</button>
+            <button onclick="location.href='/clearanceCategories'">View Departments</button>
           </div>
+        </div>
+        <div class="dashboard-card">
+          <h2>Clearance Requests</h2>
+          <p id="total-requests">Loading...</p>
+          <button onclick="location.href='/clearanceRequests'">View Clearance Requests</button>
         </div>
       </main>
     </div>
@@ -211,9 +216,14 @@
           const usersData = await usersResponse.json();
           const totalUsers = usersData.users.length;
 
-        console.log("User data", JSON.stringify(usersData));
+          const requestsResponse = await fetch("/getAllClearances");
+          const requestData = await requestsResponse.json();
+          const totalrequests = requestData.response.length;
+
+          console.log("User data", JSON.stringify(usersData));
 
           document.getElementById("total-users").textContent = totalUsers;
+          document.getElementById("total-requests").textContent = totalrequests;
         } catch (error) {
           console.error("Error fetching data:", error);
         }
