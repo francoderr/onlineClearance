@@ -124,6 +124,7 @@
       .logout-button:hover {
         background-color: #ff52c5;
       }
+      
       .heading-container {
         text-align: center;
         margin-top: 50px; /* Adds spacing above and below */
@@ -150,35 +151,25 @@
         <h2>Select Department to Clear</h2>
       </div>
       <main>
-        <div class="card">
+        <div class="card admin">
           <h2>Administration</h2>
-          <a class="clearance-button" href="/clearance/administration"
-            >Begin Clearance</a
-          >
+          <a class="clearance-button" href="/clearance/administration">Begin Clearance</a>
         </div>
-        <div class="card">
+        <div class="card sports">
           <h2>Sports</h2>
-          <a class="clearance-button" href="/clearance/sports"
-            >Begin Clearance</a
-          >
+          <a class="clearance-button" href="/clearance/sports">Begin Clearance</a>
         </div>
-        <div class="card">
+        <div class="card finance">
           <h2>Finance</h2>
-          <a class="clearance-button" href="/clearance/finance"
-            >Begin Clearance</a
-          >
+          <a class="clearance-button" href="/clearance/finance">Begin Clearance</a>
         </div>
-        <div class="card">
+        <div class="card library">
           <h2>Library</h2>
-          <a class="clearance-button" href="/clearance/library"
-            >Begin Clearance</a
-          >
+          <a class="clearance-button" href="/clearance/library">Begin Clearance</a>
         </div>
-        <div class="card">
+        <div class="card class">
           <h2>Class Teacher</h2>
-          <a class="clearance-button" href="/clearance/class-teacher"
-            >Begin Clearance</a
-          >
+          <a class="clearance-button" href="/clearance/class-teacher">Begin Clearance</a>
         </div>
       </main>
     </div>
@@ -188,6 +179,51 @@
         .addEventListener("click", function () {
           document.getElementById("sidebar").classList.toggle("collapsed");
         });
+
+      // Function to fetch clearance info and update card backgrounds
+      async function fetchClearanceInfo() {
+        try {
+          const response = await fetch('http://localhost:3000/getClearanceInfo', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Cookie': 'connect.sid=s%3AdtJT5Sp-bCgmzTJbzfSo6pZkwBjFUqfo.zEgesBcoDCpWU7UYNVCAcOpueFqxqtPE1gxcEUDGc3k'
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const data = await response.json();
+
+          // Check the clearance status and update card backgrounds
+          if (data.Status === "Success") {
+            const info = data.info;
+
+            if (info.administrationCleared) {
+              document.querySelector('.card.admin').style.backgroundColor = '#00c9b6';
+            }
+            if (info.libraryCleared) {
+              document.querySelector('.card.library').style.backgroundColor = '#00c9b6';
+            }
+            if (info.sportsCleared) {
+              document.querySelector('.card.sports').style.backgroundColor = '#00c9b6';
+            }
+            if (info.financeCleared) {
+              document.querySelector('.card.finance').style.backgroundColor = '#00c9b6';
+            }
+            if (info.classTeacherCleared) {
+              document.querySelector('.card.class').style.backgroundColor = '#00c9b6';
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching clearance info:', error);
+        }
+      }
+
+      // Call the function when the page loads
+      window.onload = fetchClearanceInfo;
     </script>
   </body>
 </html>
