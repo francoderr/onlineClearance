@@ -218,8 +218,8 @@
                                         <span class="${request.administrationCleared ? 'cleared' : 'pending'}">${request.administrationCleared ? 'Cleared' : 'Pending'}</span>
                                     </div>
                                     <div class="button-container">
-                                        <button onclick="toggleClearance('administrationCleared', 'activate')">Activate</button>
-                                        <button onclick="toggleClearance('administrationCleared', 'deactivate')">Deactivate</button>
+                                        <button onclick="toggleClearance('administrationCleared', 'activate', '${request.userId}' )">Activate</button>
+                                        <button onclick="toggleClearance('administrationCleared', 'deactivate', '${request.userId}')">Deactivate</button>
                                     </div>
                                 </div>
                             </td>
@@ -242,8 +242,8 @@
                                         <span class="${request.financeCleared ? 'cleared' : 'pending'}">${request.financeCleared ? 'Cleared' : 'Pending'}</span>
                                     </div>
                                     <div class="button-container">
-                                        <button onclick="toggleClearance('financeCleared', 'activate')">Activate</button>
-                                        <button onclick="toggleClearance('financeCleared', 'deactivate')">Deactivate</button>
+                                        <button onclick="toggleClearance('financeCleared', 'activate', '${request.userId}')">Activate</button>
+                                        <button onclick="toggleClearance('financeCleared', 'deactivate', '${request.userId}')">Deactivate</button>
                                     </div>
                                 </div>
                             </td>
@@ -266,8 +266,8 @@
                                         <span class="${request.libraryCleared ? 'cleared' : 'pending'}">${request.libraryCleared ? 'Cleared' : 'Pending'}</span>
                                     </div>
                                     <div class="button-container">
-                                        <button onclick="toggleClearance('libraryCleared', 'activate')">Activate</button>
-                                        <button onclick="toggleClearance('libraryCleared', 'deactivate')">Deactivate</button>
+                                        <button onclick="toggleClearance('libraryCleared', 'activate', '${request.userId}')">Activate</button>
+                                        <button onclick="toggleClearance('libraryCleared', 'deactivate','${request.userId}')">Deactivate</button>
                                     </div>
                                 </div>
                             </td>
@@ -290,8 +290,8 @@
                                         <span class="${request.sportsCleared ? 'cleared' : 'pending'}">${request.sportsCleared ? 'Cleared' : 'Pending'}</span>
                                     </div>
                                     <div class="button-container">
-                                        <button onclick="toggleClearance('sportsCleared', 'activate')">Activate</button>
-                                        <button onclick="toggleClearance('sportsCleared', 'deactivate')">Deactivate</button>
+                                        <button onclick="toggleClearance('sportsCleared', 'activate', '${request.userId}')">Activate</button>
+                                        <button onclick="toggleClearance('sportsCleared', 'deactivate', '${request.userId}')">Deactivate</button>
                                     </div>
                                 </div>
                             </td>
@@ -314,8 +314,8 @@
                                         <span class="${request.classTeacherCleared ? 'cleared' : 'pending'}">${request.classTeacherCleared ? 'Cleared' : 'Pending'}</span>
                                     </div>
                                     <div class="button-container">
-                                        <button onclick="toggleClearance('classTeacherCleared', 'activate')">Activate</button>
-                                        <button onclick="toggleClearance('classTeacherCleared', 'deactivate')">Deactivate</button>
+                                        <button onclick="toggleClearance('classTeacherCleared', 'activate', '${request.userId}')">Activate</button>
+                                        <button onclick="toggleClearance('classTeacherCleared', 'deactivate', '${request.userId}')">Deactivate</button>
                                     </div>
                                 </div>
                             </td>
@@ -330,9 +330,11 @@
             }
         }
 
-        async function toggleClearance(value, action) {
+        async function toggleClearance(value, action, userId) {
             const url = 'http://localhost:3000/clearDepartment';
-            const data = { value: value, action: action };
+            const data = { value: value, action: action, userId: userId };
+
+            console.log("userId: ", userId)
 
             try {
                 const response = await fetch(url, {

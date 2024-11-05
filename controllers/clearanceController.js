@@ -113,7 +113,7 @@ export const uploadPics = async (req, res) => {
 
 export const clearDepartment = async (req, res) => {
   const action = req.body.action;
-  const userId = req.user._id;
+  const userId = req.body.userId;
   const val = req.body.value;
 
   if (!userId) {
