@@ -131,6 +131,18 @@
         background-color: #ff52c5;
       }
 
+      .delete-button {
+        background-color: red;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+
+      .delete-button:hover {
+        background-color: #ff52c5;
+      }
+
       .logout-button {
         background-color: black;
         color: white;
@@ -201,9 +213,14 @@
             <td>${user.email}</td>
             <td>${user.role}</td>
             <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-            <td><button class="edit-button" onclick="editUser('${
+            <td>
+              <button class="edit-button" onclick="editUser('${
+                user._id
+              }')">Edit</button>
+            <button class="delete-button" onclick="deleteUser('${
               user._id
-            }')">Edit</button></td>
+            }')">Delete</button>
+            </td>
           `;
           userTableBody.appendChild(row);
         });
@@ -211,6 +228,30 @@
 
       function editUser(userId) {
         window.location.href = `/editUzer/${userId}`;
+      }
+
+      async function deleteUser(userId) {
+        const url = "http://localhost:3000/deleteUser";
+        const data = { userId: userId };
+
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (response.ok) {
+            alert(`deleted user successfully`);
+            fetchUsers();
+          } else {
+            alert("Error occurred while updating the clearance status.");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
       }
 
       fetchUsers();

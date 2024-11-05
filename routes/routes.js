@@ -1,6 +1,6 @@
 import express from "express";
 
-import { editUser, getUsers } from "../controllers/userController.js";
+import { deleteUser, editUser, getUsers } from "../controllers/userController.js";
 import {
   beginClearance,
   clearDepartment,
@@ -16,6 +16,7 @@ const router = express.Router();
 //user routes
 router.get("/getUsers", isAdmin,getUsers);
 router.post("/editUser", isAdmin, editUser);
+router.post("/deleteUser", isAdmin, deleteUser);
 
 //payment routes
 router.post("/stkPush", createToken, stkPush);
